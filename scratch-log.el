@@ -104,11 +104,13 @@
 
 (defun sl-restore-scratch ()
   (interactive)
-  (when sl-restore-scratch-p
+  (when (and sl-restore-scratch-p
+             (file-exists-p sl-prev-scratch-string-file))
     (with-current-buffer "*scratch*"
+      (buffer-disable-undo)
       (erase-buffer)
-      (when (file-exists-p sl-prev-scratch-string-file)
-        (insert-file-contents sl-prev-scratch-string-file)))))
+      (insert-file-contents sl-prev-scratch-string-file)
+      (buffer-enable-undo))))
 
 (defun sl-scratch-buffer-p ()
   (if (string= "*scratch*" (buffer-name)) nil t))
