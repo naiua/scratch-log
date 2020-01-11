@@ -85,6 +85,17 @@ from log file when emacs is started."
        (progn ,@body)))
 
 ;;; Main
+(defun sl-make-prev-scratch-string-file ()
+  (write-region (point-min) (point-max) sl-scratch-prev-file nil 'nomsg))
+
+(defun sl-append-scratch-log-file ()
+  (let* ((time (format-time-string "* %Y/%m/%d-%H:%m" (current-time)))
+         (buf-str (buffer-substring-no-properties (point-min) (point-max)))
+         (contents (concat "\n" time "\n" buf-str)))
+    (with-temp-buffer
+      (insert contents)
+      (write-region (point-min) (point-max) sl-scratch-log-file t 'nomsg))))
+
 (defun sl-dump-scratch-when-kill-buf ()
   "Save scratch buffer content to log files.
 This function is invoked when scratch buffer is killed."
@@ -102,13 +113,6 @@ This function is invoked when emacs is killed."
       (sl-make-prev-scratch-string-file)
       (sl-append-scratch-log-file))))
 
-(defun sl-dump-scratch-for-timer ()
-  (interactive)
-  (if (sl-need-to-save)
-      (sl-awhen (get-buffer "*scratch*")
-        (with-current-buffer it
-          (sl-make-prev-scratch-string-file)))))
-
 (defun sl-need-to-save ()
   "Return t if scratch buffer is modified."
   (sl-awhen (get-buffer "*scratch*")
@@ -121,16 +125,12 @@ This function is invoked when emacs is killed."
                       it 1 scratch-point-max)
                      0)))))))
 
-(defun sl-make-prev-scratch-string-file ()
-  (write-region (point-min) (point-max) sl-scratch-prev-file nil 'nomsg))
-
-(defun sl-append-scratch-log-file ()
-  (let* ((time (format-time-string "* %Y/%m/%d-%H:%m" (current-time)))
-         (buf-str (buffer-substring-no-properties (point-min) (point-max)))
-         (contents (concat "\n" time "\n" buf-str)))
-    (with-temp-buffer
-      (insert contents)
-      (write-region (point-min) (point-max) sl-scratch-log-file t 'nomsg))))
+(defun sl-dump-scratch-for-timer ()
+  (interactive)
+  (if (sl-need-to-save)
+      (sl-awhen (get-buffer "*scratch*")
+        (with-current-buffer it
+          (sl-make-prev-scratch-string-file)))))
 
 (defun sl-restore-scratch ()
   (interactive)
