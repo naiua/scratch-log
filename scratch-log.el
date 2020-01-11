@@ -73,11 +73,13 @@ from log file when emacs is started."
 
 ;;; Utilities
 (defmacro sl-aif (test-form then-form &rest else-forms)
+  "Anaphoric if."
   (declare (indent 2))
   `(let ((it ,test-form))
      (if it ,then-form ,@else-forms)))
 
 (defmacro sl-awhen (test-form &rest body)
+  "Anaphoric when."
   (declare (indent 1))
   `(sl-aif ,test-form
        (progn ,@body)))
