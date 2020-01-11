@@ -86,12 +86,16 @@ from log file when emacs is started."
 
 ;;; Main
 (defun sl-dump-scratch-when-kill-buf ()
+  "Save scratch buffer content to log files.
+This function is invoked when scratch buffer is killed."
   (interactive)
   (when (string= "*scratch*" (buffer-name))
     (sl-make-prev-scratch-string-file)
     (sl-append-scratch-log-file)))
 
 (defun sl-dump-scratch-when-kill-emacs ()
+  "Save scratch buffer content to log files.
+This function is invoked when emacs is killed."
   (interactive)
   (sl-awhen (get-buffer "*scratch*")
     (with-current-buffer it
@@ -106,6 +110,7 @@ from log file when emacs is started."
           (sl-make-prev-scratch-string-file)))))
 
 (defun sl-need-to-save ()
+  "Return t if scratch buffer is modified."
   (sl-awhen (get-buffer "*scratch*")
     (let ((scratch-point-max (with-current-buffer it (point-max))))
       (with-temp-buffer
