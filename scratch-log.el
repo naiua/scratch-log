@@ -35,9 +35,6 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'cl))
-
 
 (defvar sl-scratch-log-file "~/.emacs.d/.scratch-log")
 (defvar sl-prev-scratch-string-file "~/.emacs.d/.scratch-log-prev")
@@ -53,7 +50,7 @@
   `(let ((it ,test-form))
      (if it ,then-form ,@else-forms)))
 
-(defmacro* sl-awhen (test-form &body body)
+(defmacro sl-awhen (test-form &rest body)
   (declare (indent 1))
   `(sl-aif ,test-form
        (progn ,@body)))
