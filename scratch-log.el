@@ -44,7 +44,7 @@
   :type 'file
   :group 'scratch-log)
 
-(defcustom sl-prev-scratch-string-file
+(defcustom sl-scratch-prev-file
   (locate-user-emacs-file ".scratch-log-prev")
   "File for the last session's scratch buffer."
   :type 'file
@@ -109,7 +109,7 @@ from log file when emacs is started."
   (sl-awhen (get-buffer "*scratch*")
     (let ((scratch-point-max (with-current-buffer it (point-max))))
       (with-temp-buffer
-        (insert-file-contents sl-prev-scratch-string-file)
+        (insert-file-contents sl-scratch-prev-file)
         (or (not (eq (point-max) scratch-point-max))
             (not (eq (compare-buffer-substrings
                       (current-buffer) 1 (point-max)
@@ -117,7 +117,7 @@ from log file when emacs is started."
                      0)))))))
 
 (defun sl-make-prev-scratch-string-file ()
-  (write-region (point-min) (point-max) sl-prev-scratch-string-file nil 'nomsg))
+  (write-region (point-min) (point-max) sl-scratch-prev-file nil 'nomsg))
 
 (defun sl-append-scratch-log-file ()
   (let* ((time (format-time-string "* %Y/%m/%d-%H:%m" (current-time)))
@@ -130,11 +130,11 @@ from log file when emacs is started."
 (defun sl-restore-scratch ()
   (interactive)
   (when (and sl-restore-scratch-p
-             (file-exists-p sl-prev-scratch-string-file))
+             (file-exists-p sl-scratch-prev-file))
     (with-current-buffer "*scratch*"
       (buffer-disable-undo)
       (erase-buffer)
-      (insert-file-contents sl-prev-scratch-string-file)
+      (insert-file-contents sl-scratch-prev-file)
       (buffer-enable-undo))))
 
 (defun sl-scratch-buffer-p ()
