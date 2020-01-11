@@ -1,4 +1,4 @@
-;;; scratch-log.el --- Utility for *scratch* buffer  -*- lexical-binding: t -*-
+;;; scratch-log.el --- Save and restore the scratch buffer  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010 by kmori
 
