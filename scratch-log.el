@@ -112,7 +112,7 @@ from log file when emacs is started."
         (insert-file-contents sl-scratch-prev-file)
         (or (not (eq (point-max) scratch-point-max))
             (not (eq (compare-buffer-substrings
-                      (current-buffer) 1 (point-max)
+                      nil 1 (point-max)
                       it 1 scratch-point-max)
                      0)))))))
 
@@ -164,6 +164,7 @@ How to send a bug report:
   4) If you got an error, please paste *Backtrace* buffer.
   5) Type C-c C-c to send.
 # If you are a Japanese, please write in Japanese:-)")
+
 (defun scratch-log-send-bug-report ()
   (interactive)
   (reporter-submit-bug-report
