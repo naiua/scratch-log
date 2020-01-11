@@ -22,8 +22,6 @@
 
 ;;; Commentary:
 
-;;; Installation:
-
 ;; Put this file into load-path'ed directory, and byte compile it if
 ;; desired.  And put the following expression into your ~/.emacs.
 ;;
@@ -43,8 +41,7 @@
 (defvar sl-use-timer t)
 (defvar sl-timer-interval 30 "*Seconds of timer interval.")
 
-
-;; utility
+;;; Utilities
 (defmacro sl-aif (test-form then-form &rest else-forms)
   (declare (indent 2))
   `(let ((it ,test-form))
@@ -55,8 +52,7 @@
   `(sl-aif ,test-form
        (progn ,@body)))
 
-
-;; main
+;;; Main
 (defun sl-dump-scratch-when-kill-buf ()
   (interactive)
   (when (string= "*scratch*" (buffer-name))
@@ -120,9 +116,10 @@
 (when sl-use-timer
   (run-with-idle-timer sl-timer-interval t 'sl-dump-scratch-for-timer))
 
-;;;; Bug report
+;;; Bug report
 (defvar scratch-log-maintainer-mail-address
   (concat "morihen" "otegami@gm" "ail.com"))
+
 (defvar scratch-log-bug-report-salutation
   "Describe bug below, using a precise recipe.
 
@@ -145,3 +142,5 @@ How to send a bug report:
    scratch-log-bug-report-salutation))
 
 (provide 'scratch-log)
+
+;;; scratch-log.el ends here
