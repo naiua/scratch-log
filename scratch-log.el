@@ -31,15 +31,45 @@
 
 ;; 0.0.1: scratch-log.el 0.0.1 released.
 
-;;; Code:
+;;; Code
+;;; Options
+(defgroup scratch-log nil
+  "Save and restore the scratch buffer."
+  :group 'convenience
+  :prefix "sl-")
 
+(defcustom sl-scratch-log-file
+  (locate-user-emacs-file ".scratch-log")
+  "File for saving scratch buffer contents."
+  :type 'file
+  :group 'scratch-log)
 
-(defvar sl-scratch-log-file "~/.emacs.d/.scratch-log")
-(defvar sl-prev-scratch-string-file "~/.emacs.d/.scratch-log-prev")
-(defvar sl-restore-scratch-p t)
-(defvar sl-prohibit-kill-scratch-buffer-p t)
-(defvar sl-use-timer t)
-(defvar sl-timer-interval 30 "*Seconds of timer interval.")
+(defcustom sl-prev-scratch-string-file
+  (locate-user-emacs-file ".scratch-log-prev")
+  "File for the last session's scratch buffer."
+  :type 'file
+  :group 'scratch-log)
+
+(defcustom sl-restore-scratch-p t
+  "Non-nil means scratch buffer is restored
+from log file when emacs is started."
+  :type 'boolean
+  :group 'scratch-log)
+
+(defcustom sl-prohibit-kill-scratch-buffer-p t
+  "Non-nil means killing scratch buffer is prohibited."
+  :type 'boolean
+  :group 'scratch-log)
+
+(defcustom sl-use-timer t
+  "Non-nil means scratch buffer is saved at the interval specified by `sl-timer-interval'."
+  :type 'boolean
+  :group 'scratch-log)
+
+(defcustom sl-timer-interval 30
+  "The interval between auto-saving *scratch* buffer."
+  :type 'integer
+  :group 'scratch-log)
 
 ;;; Utilities
 (defmacro sl-aif (test-form then-form &rest else-forms)
